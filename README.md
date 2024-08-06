@@ -3,6 +3,9 @@
 ## 프로젝트 개요
 이 프로젝트는 딥러닝을 사용하여 음성을 텍스트로 변환하고, 텍스트 요약 및 키워드 추출을 통해 강의 내용을 빠르게 이해할 수 있는 웹 애플리케이션입니다. 
 
+## 소개 영상
+[![FindIt 프로젝트 소개 영상](https://img.youtube.com/vi/ufrvlhjS7l4/0.jpg)](https://www.youtube.com/watch?v=ufrvlhjS7l4)
+
 ## 설치 및 실행 방법
 
 ### 필수 조건
