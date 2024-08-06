@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="loginstyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="main.html">찾아줘</a>
+        <div class="collapse navbar-collapse">
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-title">로그인</div>
+            <p class="text-center"><span class="custom-font">찾아줘</span> 계정이 있으시다면</p>
+            <form method="post" action="/process/login">
+                <div class="form-group">
+                    <label for="id">ID:</label>
+                    <input type="text" class="form-control" id="id" name="id" placeholder="ID를 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="pw">PW:</label>
+                    <input type="password" class="form-control" id="pw" name="password" placeholder="비밀번호를 입력하세요">
+                </div>
+                <button type="submit" class="btn btn-primary">완료</button>
+            </form>
+            <p class="register-link">계정이 없으십니까? <a href="join.html">가입</a></p>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메인 메뉴</title>
+    <link rel="stylesheet" href="spacestyle.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="main.html">찾아줘</a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <div class="btn-group" role="group" aria-label="노트 관리">
+                <button type="button" class="btn btn-primary" onclick="addNote()">
+                    <img src="add-notes.png" alt="노트 추가 아이콘" class="icon"> 노트 추가
+                </button>
+                <button type="button" class="btn btn-danger" onclick="removeNote()">
+                    <img src="delete-notes.png" alt="노트 삭제 아이콘" class="icon"> 노트 삭제
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" id="content">
+        <div id="user-id" class="ibm-plex-sans-kr-regular"></div>
+        <div id="notes" class="ibm-plex-sans-kr-regular"></div>
+    </div>
+
+    <!-- 노트 추가 모달 -->
+    <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-lg-custom">
+            <div class="modal-content" id="noteModalContent">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="noteModalLabel">노트 추가</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- 왼쪽 반쪽 창 -->
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="audioFile" class="file-select-label">파일 선택</label>
+                                <input type="file" class="form-control-file" id="audioFile" accept="audio/*" style="display: none;">
+                                <span id="fileName">선택된 파일 없음</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="displayExtractedText()">추출된 텍스트</button>
+                            <button type="button" class="btn btn-secondary" onclick="displaySummary()">요약본</button>
+                            <button type="button" class="btn btn-secondary" onclick="displayKeywords()">키워드</button>
+                            <button type="button" class="btn btn-secondary" onclick="displayLinks()">링크</button>
+                            <div id="dynamicContent" style="margin-top: 20px;">
+                            </div>
+                        </div>
+                        <!-- 오른쪽 반쪽 창 -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="memo">메모:</label>
+                                <textarea class="form-control" id="memo" placeholder="메모를 입력하세요" rows="16"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="noteModalConfirmBtn">완료</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade custom-alert-modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertModalLabel">알림</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    노트 제목을 입력하세요:
+                    <input type="text" id="noteTitleInput" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="alertConfirmBtn">확인</button>
+                    <button type="button" class="btn btn-secondary" id="alertCancelBtn">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade custom-delete-modal" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">삭제 확인</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    삭제할 노트 제목을 입력하세요:
+                    <input type="text" id="noteToDeleteInput" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="deleteConfirmBtn">확인</button>
+                    <button type="button" class="btn btn-secondary" id="deleteCancelBtn">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let notesData = [];
+        let extractedText = '';
+        let summaryText = '';
+        let keywordsList = [];
+
+        function getParameterByName(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('id');
+            if (userId) {
+                document.getElementById('user-id').innerText = `${userId}의 공간`;
+            }
+        });
+
+        function addNote() {
+            $('#noteTitleInput').val('');
+            $('#memo').val('');
+            $('#noteModalLabel').text('노트 추가'); 
+            $('#noteModal').modal('show');
+            $('#noteModal .modal-footer .btn-secondary').show(); 
+
+            
+            $('#noteModal .btn-primary').off('click').on('click', function () {
+                $('#alertModal').modal('show'); 
+            });
+        }
+
+        function openNoteModal(note) {
+            $('#noteTitleInput').val(note.title);
+            $('#memo').val(note.memo);
+            extractedText = note.audio_text || '';
+            summaryText = note.summary || '';
+            keywordsList = note.keywords ? note.keywords.split(', ') : [];
+            $('#noteModalLabel').text(note.title);
+            $('#noteModal').modal('show');
+            $('#noteModal .modal-footer .btn-secondary').hide();
+
+           
+            $('#noteModal .btn-primary').off('click').on('click', function () {
+                $('#noteModal').modal('hide'); 
+            });
+
+            if (note.audioFileName) {
+                $('#fileName').text(note.audioFileName);
+            } else {
+                $('#fileName').text('선택된 파일 없음');
+            }
+        }
+
+        $(document).ready(function () {
+    const userId = getParameterByName('id');
+    console.log(`Loading notes for user_id: ${userId}`);
+
+    $.get(`/api/notes/${userId}`, function (data) {
+        console.log('Notes loaded:', data);
+        data.forEach(note => {
+            const notesDiv = document.getElementById("notes");
+            const newNote = document.createElement("button");
+            newNote.className = "note btn btn-primary";
+            newNote.innerHTML = `<div class="note-title">${note.title}</div>`;
+            newNote.addEventListener('click', () => {
+                openNoteModal(note);
+            });
+            notesDiv.appendChild(newNote);
+            notesData.push({
+                id: note.id,
+                title: note.title,
+                memo: note.memo,
+                audioFileName: note.audioFileName,
+                text: note.audio_text,
+                summary: note.summary,
+                keywords: note.keywords
+            });
+        });
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error('Error loading notes:', textStatus, errorThrown);
+        alert('노트 조회 중 오류 발생');
+    });
+
+    
+    $('#deleteConfirmBtn').off('click').on('click', function () {
+        const noteTitle = $('#noteToDeleteInput').val();
+        const note = notesData.find(n => n.title === noteTitle);
+        if (note) {
+            const noteId = note.id;
+            $.ajax({
+                url: `/api/notes/${noteId}`,
+                type: 'DELETE',
+                success: function (result) {
+                    notesData = notesData.filter(n => n.id !== noteId);
+                    const notesDiv = document.getElementById("notes");
+                    const noteElements = notesDiv.getElementsByClassName("note");
+                    for (let i = 0; i < noteElements.length; i++) {
+                        if (noteElements[i].querySelector('.note-title').innerText === noteTitle) {
+                            notesDiv.removeChild(noteElements[i]);
+                            break;
+                        }
+                    }
+                    $('#deleteModal').modal('hide');
+                },
+                error: function (err) {
+                    console.error('노트 삭제 중 오류 발생:', err);
+                    alert('노트 삭제 중 오류 발생');
+                }
+            });
+        } else {
+            alert("삭제할 노트를 찾을 수 없습니다.");
+        }
+    });
+
+    $('#deleteCancelBtn').off('click').on('click', function () {
+        $('#deleteModal').modal('hide');
+    });
+
+    $('#alertConfirmBtn').off('click').on('click', function () {
+    const noteTitle = $('#noteTitleInput').val();
+    const noteMemo = $('#memo').val();
+    const audioFileName = $('#fileName').text(); 
+    if (noteTitle) {
+        $.post('/api/notes', {
+            user_id: userId,
+            title: noteTitle,
+            memo: noteMemo,
+            audio_text: extractedText,
+            summary: summaryText,
+            keywords: keywordsList.join(', ')
+        }, function (data) {
+            const notesDiv = document.getElementById("notes");
+            const newNote = document.createElement("button");
+            newNote.className = "note btn btn-primary";
+            newNote.innerHTML = `<div class="note-title">${noteTitle}</div>`;
+            newNote.addEventListener('click', () => {
+                openNoteModal({
+                    id: data.id,
+                    title: noteTitle,
+                    memo: noteMemo,
+                    audioFileName: audioFileName,
+                    audio_text: extractedText,
+                    summary: summaryText,
+                    keywords: keywordsList.join(', ')
+                }); 
+            });
+            notesDiv.appendChild(newNote);
+            notesData.push({
+                id: data.id,
+                title: noteTitle,
+                memo: noteMemo,
+                audioFileName: audioFileName,
+                text: extractedText,
+                summary: summaryText,
+                keywords: keywordsList.join(', ')
+            });
+            $('#alertModal').modal('hide');
+            $('#noteModal').modal('hide');
+            $('#audioFile').val('');
+            $('#fileName').text('선택된 파일 없음');
+        }).fail(function () {
+            alert('노트 저장 중 오류 발생');
+        });
+    } else {
+        alert("노트 제목을 입력하세요.");
+    }
+});
+
+    $('#alertCancelBtn').off('click').on('click', function () {
+        $('#alertModal').modal('hide');
+        $('#noteModalContent').removeClass('blurred');
+        $('#audioFile').val('');
+        $('#fileName').text('선택된 파일 없음');
+    });
+});
+
+function removeNote() {
+    $('#noteToDeleteInput').val('');
+    $('#deleteModal').modal('show');
+}
+
+        function displayFileName(event) {
+            event.stopPropagation();
+            const fileInput = document.getElementById('audioFile');
+            const fileName = document.getElementById('fileName');
+            if (fileInput.files.length > 0) {
+                fileName.textContent = fileInput.files[0].name;
+                uploadAndProcessFile();
+            } else {
+                fileName.textContent = '선택된 파일 없음';
+            }
+        }
+
+        document.getElementById('audioFile').addEventListener('change', displayFileName);
+
+        function uploadAndProcessFile() {
+            const fileInput = document.getElementById('audioFile');
+            const formData = new FormData();
+            formData.append('audioFile', fileInput.files[0]);
+
+            $.ajax({
+                url: '/upload_audio',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    extractedText = response.text;
+                    summaryText = response.summary;
+                    keywordsList = response.keywords;
+                    alert('파일 업로드 및 처리 성공');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('파일 업로드 실패: ' + textStatus);
+                    console.error('Error uploading file:', textStatus, errorThrown);
+                }
+            });
+        }
+
+        function displayExtractedText() {
+            console.log("displayExtractedText called", extractedText);
+            const content = `
+            <div>
+                <h5>추출된 텍스트</h5>
+                <p>${extractedText}</p>
+            </div>
+            `;
+            document.getElementById('dynamicContent').innerHTML = content;
+        }
+
+        function displaySummary() {
+            console.log("displaySummary called", summaryText);
+
+            const summary = summaryText?.trim() || "요약된 내용이 없습니다.";
+
+            const content = `
+            <div>
+                <h5>요약본</h5>
+                <p>${summary}</p>
+            </div>
+            `;
+            document.getElementById('dynamicContent').innerHTML = content;
+        }
+
+        function displayKeywords() {
+            console.log("displayKeywords called", keywordsList);
+
+            const cleanedKeywords = keywordsList.map(keyword => {
+                if (keyword.includes('\n')) {
+                    keyword = keyword.split('\n')[0];
+                }
+                return keyword.trim();
+            }).filter(keyword => keyword);
+
+            const sortedKeywords = cleanedKeywords.sort();
+
+            const content = `
+            <div>
+                <h5>키워드</h5>
+                <p>${sortedKeywords.join(', ')}</p>
+            </div>
+            `;
+            document.getElementById('dynamicContent').innerHTML = content;
+        }
+
+        function displayLinks() {
+            console.log("displayLinks called", keywordsList);
+
+            const cleanedKeywords = keywordsList.map(keyword => {
+                if (keyword.includes('\n')) {
+                    keyword = keyword.split('\n')[0];
+                }
+                return keyword.trim();
+            }).filter(keyword => keyword);
+
+            const sortedKeywords = cleanedKeywords.sort();
+
+            const content = sortedKeywords.map(keyword => `
+                <button class="btn btn-primary m-2 keyword-btn" onclick="searchKeyword('${keyword}')">${keyword}</button>
+            `).join('');
+
+            document.getElementById('dynamicContent').innerHTML = `
+            <div>
+                <h5>링크</h5>
+                <div class="keyword-container">
+                    ${content}
+                </div>
+            </div>
+            `;
+        }
+
+        async function searchKeyword(keyword) {
+            console.log("searchKeyword called", keyword);
+            const response = await fetch(`http://127.0.0.1:5000/api/search?query=${encodeURIComponent(keyword)}`);
+            if (!response.ok) {
+                console.error("API 호출 실패:", response.statusText);
+                return;
+            }
+            const results = await response.json();
+            console.log("search results", results);
+
+            displaySearchResults(results);
+        }
+
+        function displaySearchResults(results) {
+            const searchResultsDiv = document.getElementById('dynamicContent');
+            searchResultsDiv.innerHTML = '';
+
+            if (results.length === 0) {
+                searchResultsDiv.innerHTML = '<p>검색 결과가 없습니다.</p>';
+                return;
+            }
+
+            const list = document.createElement('ul');
+            list.className = 'list-group';
+
+            results.forEach(result => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+
+                const title = document.createElement('h5');
+                title.innerText = result.Title;
+
+                const link = document.createElement('a');
+                link.href = result.Link;
+                link.innerText = result.Link;
+                link.target = '_blank';
+
+                const description = document.createElement('p');
+                description.innerText = result.Description;
+
+                listItem.appendChild(title);
+                listItem.appendChild(link);
+                listItem.appendChild(description);
+
+                list.appendChild(listItem);
+            });
+
+            searchResultsDiv.appendChild(list);
+        }
+
+        function openFolder(folderName) {
+            console.log("폴더 열림: ", folderName);
+        }
+
+        $('#alertCancelBtn').off('click').on('click', function () {
+            $('#alertModal').modal('hide');
+            $('#noteModalContent').removeClass('blurred');
+            $('#audioFile').val('');
+            $('#fileName').text('선택된 파일 없음');
+        });
+
+        $('#noteModal').on('hidden.bs.modal', function () {
+            $('#audioFile').val('');
+            $('#fileName').text('선택된 파일 없음');
+        });
+
+        $('#alertModal').on('show.bs.modal', function () {
+            $('#noteModal').addClass('blurred');
+        });
+
+        $('#alertModal').on('hide.bs.modal', function () {
+            $('#noteModal').removeClass('blurred');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,260 @@
+.navbar-brand {
+    font-family: "Black Han Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 50px !important;
+}
+
+.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.ibm-plex-sans-kr-regular {
+    font-family: "IBM Plex Sans KR", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+
+#user-id {
+    position: absolute;
+    top: 100px;
+    left: 15px;
+    font-size: 24px;
+    text-align: left;
+}
+
+
+.container {
+    text-align: center;
+    margin-top: 150px;
+}
+
+.folder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 60px;
+    background-color: #87CEFA;
+    border: 1px solid #000;
+    margin: 5px;
+    text-align: center;
+    line-height: 1.2;
+    padding: 10px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-direction: column;
+}
+.folder-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+    
+
+
+.folder img {
+    width: 100px;
+    height: 100px;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.btn-group .btn {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: rgb(255, 255, 255);
+    color: black;
+}
+
+.note-title {
+    font-size: 14px;
+    text-align: center;
+}
+
+.modal-dialog {
+    max-width: 800px;
+    margin: 30px auto;
+}
+
+.modal-content {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-lg-custom {
+    max-width: 80% !important;
+    width: 80% !important;
+}
+
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    height: calc(80vh - 120px);
+    max-height: 500px;
+}
+
+.carousel-inner {
+    height: calc(100% - 60px);
+}
+
+.carousel-item {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.next-button,
+.prev-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.next-button {
+    right: 10px;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button img,
+.prev-button img {
+    width: 30px;
+    height: 30px;
+}
+
+
+.form-group .form-control-file{
+    display: none;
+}
+
+.file-select-label {
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000000;
+    font-weight: bold;
+}
+.file-select-label:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+#fileName {
+    vertical-align: middle;
+    padding-left : 10px;
+}
+#memo {
+    height: auto;
+}
+
+.custom-alert-modal .modal-dialog {
+    max-width: 25%;
+    margin: 1.75rem auto;
+}
+.custom-alert-modal .modal-content {
+    max-height: 300px;
+}
+.custom-alert-modal .modal-body {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.custom-delete-modal .modal-dialog {
+    max-width: 25%;
+    margin: 1.75rem auto;
+}
+.custom-delete-modal .modal-content {
+    max-height: 300px;
+}
+.custom-delete-modal .modal-body {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.modal-lg {
+    max-width: 90%;
+    width: 90%;
+}
+
+
+.container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+
+#notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top:20px;
+}
+
+.note {
+    width: calc(50% - 10px);
+    background-color: #f2ff00 !important;
+    color: rgb(0, 0, 0) !important;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid rgb(0, 0, 0) !important;
+}
+
+.note:hover {
+    background-color: #ffeb3b !important;
+}
+
+.note-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.note-title {
+    font-size: 18px;
+}
+
+.blurred {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+}
+
+.folder {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    text-align: center;
+    line-height: 80px;
+    cursor: pointer;
+    background-color: #87CEEB;
+    word-wrap: break-word;
+}
