@@ -136,11 +136,11 @@ def process_audio():
 
 
 
-NAVER_CLIENT_ID = "REDACTED"
-NAVER_CLIENT_SECRET = "REDACTED"
-KAKAO_API_KEY = "REDACTED"
-GOOGLE_SEARCH_ENGINE_ID = "REDACTED"
-GOOGLE_API_KEY = "REDACTED"
+NAVER_CLIENT_ID = os.environ.get("NAVER_CLIENT_ID", "")
+NAVER_CLIENT_SECRET = os.environ.get("NAVER_CLIENT_SECRET", "")
+KAKAO_API_KEY = os.environ.get("KAKAO_API_KEY", "")
+GOOGLE_SEARCH_ENGINE_ID = os.environ.get("GOOGLE_SEARCH_ENGINE_ID", "")
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 TRASH_LINK = ["kin", "news", "dcinside", "fmkorea", "ruliweb", "theqoo", "clien", "mlbpark", "instiz", "todayhumor"]
 
 def Google_API(query, wanted_row):

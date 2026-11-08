@@ -74,96 +74,7 @@
 - `GOOGLE_SEARCH_ENGINE_ID`
 - `GOOGLE_API_KEY`
 
-## 사용된 기술 스택
-- **프론트엔드**: HTML, CSS, Bootstrap, JavaScript
-- **백엔드**: Flask, Python, MySQL, Express.js
-- **데이터베이스**: MySQL
-
-## 주요 기능
-- **회원가입 및 로그인**: 사용자는 회원가입을 통해 계정을 만들고 로그인할 수 있습니다.
-- **음성 파일 업로드**: 사용자가 음성 파일을 업로드할 수 있습니다.
-- **텍스트 변환 및 요약**: 업로드된 음성 파일을 텍스트로 변환하고 요약합니다.
-- **키워드 추출**: 요약된 텍스트에서 주요 키워드를 추출합니다.
-- **검색 결과 제공**: 추출된 키워드를 바탕으로 관련 검색 결과를 제공합니다.
-
-## 프로젝트 구조
-
-알겠습니다. Docker 관련 내용을 제외하고 README.md 파일을 다시 작성해드리겠습니다. 다음은 주신 코드와 설명을 바탕으로 한 README.md 파일의 예시입니다.
-
-markdown
-코드 복사
-# FindIt 프로젝트
-
-## 프로젝트 개요
-이 프로젝트는 딥러닝을 사용하여 음성을 텍스트로 변환하고, 텍스트 요약 및 키워드 추출을 통해 강의 내용을 빠르게 이해할 수 있는 웹 애플리케이션입니다. 
-
-## 설치 및 실행 방법
-
-### 필수 조건
-- Python 3.x
-- Node.js
-- MySQL 데이터베이스
-
-### 설치 방법
-1. 저장소를 클론합니다.
-    ```bash
-    git clone https://github.com/JunheePark0224/Findit.git
-    ```
-2. 백엔드 디렉토리로 이동하여 필요한 라이브러리를 설치합니다.
-    ```bash
-    cd Findit/backend
-    pip install -r requirements.txt
-    ```
-3. 프론트엔드 디렉토리로 이동하여 필요한 라이브러리를 설치합니다.
-    ```bash
-    cd ../frontend
-    npm install
-    ```
-
-### 데이터베이스 설정
-1. MySQL 데이터베이스를 설정합니다.
-2. 아래의 SQL 명령어를 사용하여 데이터베이스와 테이블을 생성합니다.
-    ```sql
-    CREATE DATABASE findit;
-    USE findit;
-
-    CREATE TABLE IF NOT EXISTS users (
-        id VARCHAR(100) PRIMARY KEY,
-        password VARCHAR(100) NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS notes (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id VARCHAR(100),
-        title VARCHAR(255),
-        memo TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        audio_text LONGTEXT DEFAULT NULL,
-        summary TEXT DEFAULT NULL,
-        keywords TEXT DEFAULT NULL,
-        FOREIGN KEY (user_id) REFERENCES users(id)
-    );
-    ```
-
-### 실행 방법
-1. 백엔드 서버를 실행합니다.
-    ```bash
-    cd ../backend
-    python flask_server.py
-    ```
-2. 프론트엔드 서버를 실행합니다.
-    ```bash
-    cd ../frontend
-    npm start
-    ```
-
-### 환경 변수 설정
-서버 실행 전에 필요한 환경 변수들을 설정합니다.
-- `NAVER_CLIENT_ID`
-- `NAVER_CLIENT_SECRET`
-- `KAKAO_API_KEY`
-- `GOOGLE_SEARCH_ENGINE_ID`
-- `GOOGLE_API_KEY`
+`.env.example`을 참고해 값을 채우고, DB 접속 정보는 `config/databaseconfig.example.json`을 `config/databaseconfig.json`으로 복사해 수정합니다. 두 파일 모두 저장소에 올리지 않습니다.
 
 ## 사용된 기술 스택
 - **프론트엔드**: HTML, CSS, Bootstrap, JavaScript
@@ -178,6 +89,7 @@ markdown
 - **검색 결과 제공**: 추출된 키워드를 바탕으로 관련 검색 결과를 제공합니다.
 
 ## 프로젝트 구조
+```
 Findit/
 ├── backend/
 │ ├── flask_server.py
@@ -200,6 +112,7 @@ Findit/
 ├── package-lock.json
 ├── package.json
 └── svr.js
+```
 
 
 ## API 엔드포인트

@@ -1,0 +1,6 @@
+{
+    "host": "127.0.0.1",
+    "user": "your_db_user",
+    "password": "your_db_password",
+    "database": "Findit_database"
+}

@@ -1,0 +1,5 @@
+.env
+config/databaseconfig.json
+node_modules/
+__pycache__/
+offload/
